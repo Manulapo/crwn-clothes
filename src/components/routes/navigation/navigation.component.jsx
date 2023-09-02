@@ -15,6 +15,8 @@ function Navigation() {
   // useContext Hook
   const { currentUser } = useContext(UserContext);
   const { isCartOpen } = useContext(CartContext);
+console.log(currentUser)
+
 
   return (
     <Fragment>
@@ -29,7 +31,7 @@ function Navigation() {
           {currentUser ? (
             <Fragment>
               <span className="nav-link">
-                CIAO {currentUser.displayName.split(" ")[0].toUpperCase()}
+                CIAO {currentUser.displayName && currentUser.displayName.toUpperCase()}
               </span>
               <span
                 className="nav-link"

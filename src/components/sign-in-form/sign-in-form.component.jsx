@@ -71,7 +71,7 @@ function SignInForm() {
         <span>Sign In with your email and password</span>
         <form onSubmit={handleSubmit}>
           <FormInput
-            label="Name"
+            label="Email"
             type="text"
             required
             name="email"

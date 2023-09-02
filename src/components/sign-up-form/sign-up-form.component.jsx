@@ -43,7 +43,12 @@ function SignUpForm() {
         password
       );
 
-      createUserDocumentFromAuth(user, { displayName });
+      // DA RIVEDERE
+      if (
+        !user.displayName ? (user.displayName = displayName) : user.displayName
+      )
+        createUserDocumentFromAuth(user, displayName);
+
       resetFormFields();
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
