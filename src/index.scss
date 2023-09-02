@@ -1,0 +1,28 @@
+* {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  padding: 20px 40px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+button {
+  padding: 0.5em 1em;
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+  font-family: "Open Sans", sans-serif;
+}
