@@ -1,9 +1,14 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Fragment, useContext } from "react";
 import CartIcon from "../../cart-icon/cart-icon.component";
 import CartDropdown from "../../cart-dropdown/cart-dropdown.component";
 
-import "./navigation.styles.scss";
+import {
+  NavigationContainer,
+  LogoContainer,
+  NavLinks,
+  NavLink,
+} from "./navigation.styles";
 
 import { ReactComponent as CrownLogo } from "../../../assets/crown.svg";
 import { UserContext } from "../../contexts/user.context";
@@ -15,41 +20,43 @@ function Navigation() {
   // useContext Hook
   const { currentUser } = useContext(UserContext);
   const { isCartOpen } = useContext(CartContext);
-console.log(currentUser)
-
+  console.log(currentUser);
 
   return (
     <Fragment>
-      <div className="navigation">
-        <Link className="logo-container" to="/">
+      <NavigationContainer>
+        <LogoContainer to="/">
           <CrownLogo className="logo" />
-        </Link>
-        <div className="nav-links-container">
-          <Link className="nav-link" to="/shop">
+        </LogoContainer>
+        <NavLinks>
+          <NavLink to="/shop">
             SHOP
-          </Link>
+          </NavLink>
           {currentUser ? (
             <Fragment>
-              <span className="nav-link">
-                CIAO {currentUser.displayName && currentUser.displayName.toUpperCase()}
-              </span>
-              <span
+              <NavLink>
+                CIAO{" "}
+                {currentUser.displayName &&
+                  currentUser.displayName.toUpperCase()}
+              </NavLink>
+              <NavLink
+              
                 className="nav-link"
                 onClick={signOutUser}
                 style={{ color: "red" }}
               >
                 SIGN OUT
-              </span>
+              </NavLink>
             </Fragment>
           ) : (
-            <Link className="nav-link" to="/auth">
+            <NavLink to="/auth">
               SIGN IN
-            </Link>
+            </NavLink>
           )}
           <CartIcon />
-        </div>
+        </NavLinks>
         {isCartOpen && <CartDropdown />}
-      </div>
+      </NavigationContainer>
       <Outlet />
     </Fragment>
   );
