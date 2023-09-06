@@ -1,103 +1,84 @@
-import { Fragment, useState } from "react";
+import { useState } from 'react';
+
+import FormInput from '../form-input/form-input.component';
+import Button, { BUTTON_TYPES_CLASSES } from '../button/button.component';
+
 import {
-  signInWithGooglePopup,
   signInAuthUserWithEmailAndPassword,
-} from "../../utils/firebase/firebase.utils";
+  signInWithGooglePopup,
+} from '../../utils/firebase/firebase.utils';
 
-import FormInput from "../form-input/form-input.component";
-import Button, {BUTTON_TYPES_CLASSES} from "../button/button.component";
-
-import "./sign-in-form.styles.scss";
+import { SignInContainer, ButtonsContainer } from './sign-in-form.styles';
 
 const defaultFormFields = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 };
 
-function SignInForm() {
+const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  const logGoogleUser = async () => {
-    await signInWithGooglePopup();
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
   };
 
-  const handleChange = (event) => {
-    setFormFields({
-      ...formFields,
-      [event.target.name]: event.target.value,
-    });
+  const signInWithGoogle = async () => {
+    await signInWithGooglePopup();
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-
+      await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
-    } catch (err) {
-      switch (err.code) {
-        case "auth/wrong-password":
-          alert("Incorrect password");
-          break;
-
-        case "auth/user-not-found":
-          alert("No User Associated with this Email");
-          break;
-
-        case "auth/invalid-email":
-          alert("Invalid Email");
-          break;
-
-        default:
-          console.log(err);
-          break;
-      }
+    } catch (error) {
+      console.log('user sign in failed', error);
     }
   };
 
-  const resetFormFields = () => {
-    setFormFields(defaultFormFields);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormFields({ ...formFields, [name]: value });
   };
 
   return (
-    <Fragment>
-      <div className="sign-up-container">
-        <h2>I Already have an account?</h2>
-        <span>Sign In with your email and password</span>
-        <form onSubmit={handleSubmit}>
-          <FormInput
-            label="Email"
-            type="text"
-            required
-            name="email"
-            onChange={handleChange}
-            value={email}
-          />
+    <SignInContainer>
+      <h2>Already have an account?</h2>
+      <span>Sign in with your email and password</span>
+      <form onSubmit={handleSubmit}>
+        <FormInput
+          label='Email'
+          type='email'
+          required
+          onChange={handleChange}
+          name='email'
+          value={email}
+        />
 
-          <FormInput
-            label="Password"
-            type="password"
-            required
-            name="password"
-            onChange={handleChange}
-            value={password}
-          />
-
-          <div className="buttons-container">
-            <Button type="submit">Sign In</Button>
-            <Button type="button" buttonType={BUTTON_TYPES_CLASSES.google} onClick={logGoogleUser}>
-              Google Sign in
-            </Button>
-          </div>
-        </form>
-      </div>
-    </Fragment>
+        <FormInput
+          label='Password'
+          type='password'
+          required
+          onChange={handleChange}
+          name='password'
+          value={password}
+        />
+        <ButtonsContainer>
+          <Button type='submit'>Sign In</Button>
+          <Button
+            buttonType={BUTTON_TYPES_CLASSES.google}
+            type='button'
+            onClick={signInWithGoogle}
+          >
+            Sign In With Google
+          </Button>
+        </ButtonsContainer>
+      </form>
+    </SignInContainer>
   );
-}
+};
 
 export default SignInForm;

@@ -82,7 +82,6 @@ export const addCollectionAndDocuments = async (
   });
 
   await batch.commit();
-  console.log("done");
 };
 
 // set a DB for the user to track their auth
