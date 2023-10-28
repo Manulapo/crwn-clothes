@@ -3,25 +3,23 @@ import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./store/store";
+import { store, persistor } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 import App from "./App";
 // import { CategoriesProvider } from "./components/contexts/categories.context";
-import { CartProvider } from "./components/contexts/cart.context";
 
 import "./index.scss";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <PersistGate loading={null} persistor={persistor}>
     <Provider store={store}>
       <BrowserRouter>
-        <CartProvider>
-          <App />
-        </CartProvider>
+        <App />
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  </PersistGate>
 );
 
 // If you want to start measuring performance in your app, pass a function

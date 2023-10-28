@@ -9,7 +9,7 @@ import { selectCategoriesMap } from "../../store/categories/category.selector";
 import "./category.styles.scss";
 
 function Category() {
-  const categoriesMap = useSelector(selectCategoriesMap)
+  const categoriesMap = useSelector(selectCategoriesMap);
 
   const { category } = useParams();
   const fixedCategoryName = category.toLowerCase();
