@@ -1,5 +1,4 @@
-import { applyMiddleware, configureStore } from "@reduxjs/toolkit";
-import { compose } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { rootReducer } from "./root-reducer";
 import thunk from "redux-thunk";
@@ -8,28 +7,27 @@ import thunk from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+const customMiddlewares = [
+  process.env.NODE_ENV === 'development' && logger,
+  thunk,
+].filter(Boolean);
+
 const persistConfig = {
-  key: "root",
-  // localstorage by default
+  key: 'root',
   storage,
-  blacklist: ["user"],
+  blacklist: ['user'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Define the middleware, including the redux-logger middleware
-// it only appears when the env is development, otherwise it will clear the array
-const middlewares = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean);
-
-const composeEnhancer = (process.env.NODE_ENV !== 'production' && window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
-
-const composedEnhancers = composeEnhancer(applyMiddleware(...middlewares))
-
-// Create the Redux store using configureStore
 export const store = configureStore({
   reducer: persistedReducer,
-  undefined,
-  composedEnhancers, // Apply the defined middleware
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'],
+      },
+    }).concat(customMiddlewares),
 });
 
 export const persistor = persistStore(store);
