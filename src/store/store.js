@@ -2,6 +2,7 @@ import { applyMiddleware, configureStore } from "@reduxjs/toolkit";
 import { compose } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { rootReducer } from "./root-reducer";
+import thunk from "redux-thunk";
 
 // redux persist
 import { persistStore, persistReducer } from "redux-persist";
@@ -18,7 +19,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Define the middleware, including the redux-logger middleware
 // it only appears when the env is development, otherwise it will clear the array
-const middlewares = [process.env.NODE_ENV !== 'production' && logger].filter(Boolean);
+const middlewares = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean);
 
 const composeEnhancer = (process.env.NODE_ENV !== 'production' && window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
